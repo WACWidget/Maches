@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,192 +6,148 @@
 <title>We Are The Champions - Matches</title>
 <style>
   :root {
-    --bg: #070910;
-    --panel: rgba(17, 20, 32, .88);
-    --panel2: rgba(25, 29, 45, .94);
-    --line: rgba(212, 175, 55, .25);
-    --blue: #e0bd59;
-    --cyan: #ffe7a0;
-    --text: #f7f3e8;
-    --mute: #a8a5a0;
+    --bg: #070d1a;
+    --panel: linear-gradient(145deg,#090f1f,#14223a);
+    --line: rgba(0,225,255,0.2);
+    --blue: #4aa8ff;
+    --cyan: #64ffda;
+    --text: #dceeff;
+    --mute: #a0a0a0;
     --red: #ff647c;
-    --amber: #f3bd56;
-    --green: #8dd6a4;
+    --amber: #ffb84d;
+    --green: #64ffda;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
     color: var(--text);
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: 'Rajdhani', sans-serif;
     background: transparent;
   }
   body {
-    padding: 7px;
+    padding: 0;
     position: relative;
     isolation: isolate;
-    overflow: hidden;
-  }
-  /* Subtle premium black-and-gold atmosphere, designed to work in embeds too. */
-  body::before {
-    content: "";
-    position: fixed;
-    z-index: -2;
-    inset: -30px;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse at 8% 0%, rgba(212,175,55,.18), transparent 38%),
-      radial-gradient(ellipse at 100% 35%, rgba(93,71,20,.18), transparent 34%),
-      radial-gradient(ellipse at 45% 100%, rgba(44,52,75,.32), transparent 45%),
-      linear-gradient(135deg, #070910 0%, #10111a 48%, #080a10 100%);
-  }
-  body::after {
-    content: "";
-    position: fixed;
-    z-index: -1;
-    inset: 0;
-    pointer-events: none;
-    opacity: .22;
-    background-image:
-      linear-gradient(rgba(212,175,55,.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(212,175,55,.08) 1px, transparent 1px);
-    background-size: 28px 28px;
-    mask-image: linear-gradient(to bottom, black, transparent 85%);
   }
 
   .head {
-    display: flex; align-items: center; gap: 7px;
-    font-size: 12px; font-weight: 900; letter-spacing: 1.8px;
-    color: var(--blue); padding: 7px 6px 11px;
-    text-shadow: 0 0 16px rgba(212,175,55,.2);
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 900; letter-spacing: 2px;
+    color: var(--blue); padding: 4px 4px 8px; font-family: 'Orbitron', sans-serif;
+    text-align: center; justify-content: center;
   }
-  .head img { width: 18px; height: 18px; }
-  .head .sp { flex: 1; }
-  .head .sync { font-size: 9px; letter-spacing: 0; color: var(--mute); font-weight: 600; }
+  .head img { width: 16px; height: 16px; }
+  .head .sync { font-size: 8.5px; letter-spacing: 0; color: var(--mute); font-weight: 600; margin-left: auto; font-family: 'Orbitron', sans-serif; }
 
-  .tabs { display: flex; gap: 5px; margin-bottom: 10px; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 8px; }
   .tab {
-    flex: 1; text-align: center; padding: 8px 3px; font-size: 10px;
-    font-weight: 850; letter-spacing: .55px; color: var(--mute);
-    background: rgba(16,18,27,.78); border: 1px solid rgba(255,255,255,.09);
-    border-radius: 9px; cursor: pointer; user-select: none;
-    transition: .2s ease;
+    flex: 1; text-align: center; padding: 6px 2px; font-size: 9.5px;
+    font-weight: 850; letter-spacing: .4px; color: var(--mute);
+    background: rgba(10,20,36,0.9); border: 1px solid rgba(0,225,255,0.2);
+    border-radius: 10px; cursor: pointer; user-select: none;
+    transition: .2s ease; font-family: 'Orbitron', sans-serif;
   }
-  .tab:hover { border-color: rgba(212,175,55,.45); color: #fff5d5; }
+  .tab:hover { border-color: rgba(0,225,255,0.5); color: #fff; }
   .tab.on {
-    color: #17130a;
-    background: linear-gradient(135deg, #f3d77c, #bd9130);
-    border-color: #ffe7a0;
-    box-shadow: 0 0 18px rgba(212,175,55,.2), inset 0 1px rgba(255,255,255,.45);
+    color: #050a14;
+    background: linear-gradient(135deg, #7fd1ff, #4aa8ff);
+    border-color: #64ffda;
+    box-shadow: 0 0 12px rgba(0,82,252,0.4);
   }
   .tab .n {
     display: inline-block; min-width: 14px; padding: 1px 4px; margin-left: 3px;
-    border-radius: 8px; background: rgba(255,255,255,.12); font-size: 9px;
+    border-radius: 6px; background: rgba(255,255,255,.15); font-size: 8.5px;
   }
-  .tab.on .n { background: rgba(0,0,0,.13); }
+  .tab.on .n { background: rgba(0,0,0,.2); color: #fff; }
   .tab.urgent .n { background: var(--red); color: #fff; }
 
-  .list { display: flex; flex-direction: column; gap: 9px; }
+  .list { display: flex; flex-direction: column; gap: 8px; }
   .m {
     position: relative; display: block; text-decoration: none; color: inherit;
-    background: linear-gradient(135deg, rgba(19,21,31,.96), rgba(28,29,39,.91));
-    border: 1px solid rgba(212,175,55,.19); border-left: 3px solid var(--green);
-    border-radius: 13px; padding: 11px 11px;
-    box-shadow: 0 7px 18px rgba(0,0,0,.18), inset 0 1px rgba(255,255,255,.025);
-    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-    overflow: hidden;
-  }
-  .m::before {
-    content: ""; position: absolute; top: 0; right: 0; width: 95px; height: 95px;
-    background: radial-gradient(circle, rgba(212,175,55,.09), transparent 70%);
-    pointer-events: none;
+    background: linear-gradient(145deg, rgba(10,15,31,0.96), rgba(20,34,58,0.91));
+    border: 1px solid rgba(0,225,255,0.25); border-left: 3px solid var(--green);
+    border-radius: 12px; padding: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.2);
+    transition: transform .2s ease, border-color .2s ease;
   }
   .m:hover {
     transform: translateY(-2px);
-    border-color: rgba(255,220,116,.58);
-    box-shadow: 0 10px 25px rgba(0,0,0,.28), 0 0 18px rgba(212,175,55,.08);
+    border-color: rgba(0,225,255,0.6);
   }
   .m.need {
-    border-left-color: var(--red); border-color: rgba(255,100,124,.48);
-    box-shadow: 0 0 16px rgba(255,100,124,.10);
-    animation: pulse 2.2s ease-in-out infinite;
+    border-left-color: var(--red); border-color: rgba(255,100,124,.5);
+    box-shadow: 0 0 14px rgba(255,100,124,.15);
   }
   .m.behind { border-left-color: var(--amber); }
   .m.live { border-left-color: var(--cyan); }
-  @keyframes pulse {
-    0%,100% { box-shadow: 0 0 6px rgba(255,100,124,.08); }
-    50% { box-shadow: 0 0 16px rgba(255,100,124,.24); }
-  }
 
   .badge {
-    display: inline-block; font-size: 9px; font-weight: 900; letter-spacing: .8px;
-    padding: 3px 7px; border-radius: 5px; margin-bottom: 6px;
+    display: inline-block; font-size: 8.5px; font-weight: 900; letter-spacing: .6px;
+    padding: 2px 6px; border-radius: 5px; margin-bottom: 5px; font-family: 'Orbitron', sans-serif;
   }
-  .b-need { background: rgba(255,100,124,.16); color: #ff8b9d; border: 1px solid rgba(255,100,124,.25); }
-  .b-behind { background: rgba(243,189,86,.15); color: #ffd27a; border: 1px solid rgba(243,189,86,.23); }
-  .b-ok { background: rgba(141,214,164,.12); color: var(--green); border: 1px solid rgba(141,214,164,.2); }
-  .b-live { background: rgba(255,231,160,.12); color: var(--cyan); border: 1px solid rgba(255,231,160,.22); }
+  .b-need { background: rgba(255,100,124,.2); color: #ff8b9d; border: 1px solid rgba(255,100,124,.3); }
+  .b-behind { background: rgba(255,184,77,.18); color: #ffd27a; border: 1px solid rgba(255,184,77,.3); }
+  .b-ok { background: rgba(100,255,218,.15); color: var(--green); border: 1px solid rgba(100,255,218,.25); }
+  .b-live { background: rgba(74,168,255,.18); color: var(--cyan); border: 1px solid rgba(74,168,255,.3); }
 
-  .name { font-size: 12px; font-weight: 850; line-height: 1.35; color: #fff9e9; word-break: break-word; }
-  .vs { font-size: 10.5px; color: var(--mute); margin-top: 3px; }
-  .vs b { color: #e9d9a9; font-weight: 750; }
+  .name { font-size: 11.5px; font-weight: 800; line-height: 1.3; color: #fff; word-break: break-word; }
+  .vs { font-size: 10px; color: var(--mute); margin-top: 2px; }
+  .vs b { color: var(--text); font-weight: 700; }
 
-  .chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
   .chip {
-    font-size: 9.5px; font-weight: 700; color: #d8d1bf;
-    background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.055);
-    border-radius: 5px; padding: 3px 6px;
+    font-size: 9px; font-weight: 700; color: #cbd5e1;
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.06);
+    border-radius: 4px; padding: 2px 5px;
   }
 
-  .bar { height: 5px; margin-top: 9px; background: rgba(255,255,255,.08); border-radius: 4px; overflow: hidden; }
-  .bar > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,#b88b27,#ffe7a0); border-radius: 4px; transition: width .6s ease; }
-  .m.need .bar > i { background: linear-gradient(90deg,#ff647c,#ffbd70); }
-  .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 5px; font-size: 10px; color: var(--mute); }
-  .row b { color: #fff8e8; }
-  .when { font-size: 10.5px; font-weight: 850; color: var(--cyan); }
+  .bar { height: 4px; margin-top: 8px; background: rgba(255,255,255,.08); border-radius: 3px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,#4aa8ff,#64ffda); border-radius: 3px; }
+  .m.need .bar > i { background: linear-gradient(90deg,#ff647c,#ffb84d); }
+  
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-top: 4px; font-size: 9.5px; color: var(--mute); }
+  .row b { color: #fff; }
+  .when { font-size: 10px; font-weight: 850; color: var(--cyan); font-family: 'Orbitron', sans-serif; }
   .m.need .when { color: var(--amber); }
 
   .cta {
-    display: block; margin-top: 9px; text-align: center; padding: 7px;
-    border-radius: 7px; font-size: 10px; font-weight: 900; letter-spacing: .7px;
-    color: #17130a; background: linear-gradient(135deg,#f4dc8a,#bf9335);
-    box-shadow: inset 0 1px rgba(255,255,255,.4), 0 4px 10px rgba(0,0,0,.15);
+    display: block; margin-top: 8px; text-align: center; padding: 6px;
+    border-radius: 6px; font-size: 9.5px; font-weight: 900; letter-spacing: .6px;
+    color: #070d1a; background: linear-gradient(135deg,#7fd1ff,#4aa8ff);
+    box-shadow: inset 0 1px rgba(255,255,255,.3), 0 3px 8px rgba(0,0,0,.2);
+    font-family: 'Orbitron', sans-serif;
   }
   .m.need .cta {
-    color: #fff; background: linear-gradient(135deg,#ff7b91,#d93d58);
-    box-shadow: inset 0 1px rgba(255,255,255,.2);
+    color: #fff; background: linear-gradient(135deg,#ff647c,#d93d58);
   }
   .empty, .err {
-    text-align: center; font-size: 11px; color: var(--mute); padding: 20px 10px;
-    background: rgba(17,20,32,.84); border: 1px dashed rgba(212,175,55,.25); border-radius: 12px;
+    text-align: center; font-size: 10.5px; color: var(--mute); padding: 16px 8px;
+    background: rgba(10,15,31,.9); border: 1px dashed rgba(0,225,255,0.25); border-radius: 12px;
   }
   .skel {
-    height: 92px; border-radius: 12px;
-    background: linear-gradient(90deg,rgba(17,20,32,.85) 25%,rgba(42,39,30,.8) 50%,rgba(17,20,32,.85) 75%);
+    height: 85px; border-radius: 12px;
+    background: linear-gradient(90deg,rgba(10,15,31,.9) 25%,rgba(20,34,58,.8) 50%,rgba(10,15,31,.9) 75%);
     background-size: 200% 100%; animation: sh 1.3s linear infinite;
   }
   @keyframes sh { to { background-position: -200% 0; } }
 
-  .foot { text-align: center; margin-top: 10px; padding-bottom: 3px; }
+  .foot { text-align: center; margin-top: 8px; padding-bottom: 2px; }
   .foot a {
-    font-size: 10px; font-weight: 850; color: #e5c86b; text-decoration: none;
-    letter-spacing: .35px; transition: color .2s ease;
+    font-size: 9.5px; font-weight: 850; color: var(--blue); text-decoration: none;
+    letter-spacing: .3px; font-family: 'Orbitron', sans-serif;
   }
-  .foot a:hover { color: #fff0b8; text-shadow: 0 0 12px rgba(212,175,55,.25); }
+  .foot a:hover { color: var(--cyan); text-shadow: 0 0 10px rgba(0,225,255,0.3); }
   #dbg {
-    display: none; margin-top: 8px; font: 10px/1.4 monospace; color: #e5d38c;
-    white-space: pre-wrap; word-break: break-all; background: #08090d;
-    border: 1px solid rgba(212,175,55,.2); padding: 6px; border-radius: 6px;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    display: none; margin-top: 6px; font: 9px/1.3 monospace; color: var(--amber);
+    white-space: pre-wrap; word-break: break-all; background: #050a14;
+    border: 1px solid rgba(0,225,255,0.2); padding: 5px; border-radius: 5px;
   }
 </style>
 </head>
 <body>
 
 <div class="head">
-  <span>♟️</span>
-  <span>UPCOMING MATCHES</span><span class="sp"></span><span class="sync" id="sync"></span>
+  <span>⚔️ MATCH CENTER</span><span class="sync" id="sync"></span>
 </div>
 
 <div class="tabs" id="tabs">
@@ -207,13 +162,13 @@
 <div id="dbg"></div>
 
 <script>
-// ============ AYARLAR (sadece burayı değiştir) ============
-var CLUB          = "we-are-the-champions-7";  // kulübün kısa adı (chess.com/club/BU-KISIM)
-var MAX_UPCOMING  = 10;                        // en fazla kaç yaklaşan maç gösterilsin
-var MAX_LIVE      = 4;                         // en fazla kaç devam eden maç gösterilsin
-var REFRESH_MIN   = 5;                         // kaç dakikada bir yenilensin
+// ============ AYARLAR ============
+var CLUB         = "we-are-the-champions-7";
+var MAX_UPCOMING  = 10;
+var MAX_LIVE      = 4;
+var REFRESH_MIN   = 5;
 var API           = "https://api.chess.com/pub/";
-// ==========================================================
+// ==================================
 
 var DEBUG = /[?&]debug=1/.test(location.search);
 var dbg = document.getElementById("dbg");
@@ -254,7 +209,6 @@ function fmtWhen(ts) {
   return { label: t, short: "in " + left };
 }
 
-// Bir kayıt (liste + detay) -> gösterilecek nesne
 function build(entry, detail, kind) {
   var id = idOf(entry["@id"] || entry.url || (detail && detail["@id"]));
   var teams = (detail && detail.teams) || {};
@@ -262,7 +216,6 @@ function build(entry, detail, kind) {
   var ours = t1, theirs = t2;
   if (String(t2["@id"] || "").indexOf(CLUB) > -1) { ours = t2; theirs = t1; }
   else if (String(t1["@id"] || "").indexOf(CLUB) === -1 && entry.opponent) {
-    // takım bilgisi yoksa rakip bilgisini listeden al
     theirs = { name: prettyName(slugOf(entry.opponent)) };
   }
   var s = (detail && detail.settings) || {};
@@ -330,7 +283,6 @@ function render() {
   else if (f === "live") view = items.filter(function (m) { return m.kind === "live"; });
   else view = items.filter(function (m) { return m.kind !== "live"; });
 
-  // Öne çıkarma: önce oyuncu eksiği en çok olan, sonra geride olanlar, sonra en yakın başlangıç
   var rank = { need: 0, behind: 1, ok: 2, live: 3 };
   view.sort(function (a, b) {
     if (rank[a.level] !== rank[b.level]) return rank[a.level] - rank[b.level];
@@ -375,7 +327,7 @@ document.getElementById("tabs").addEventListener("click", function (e) {
 
 load();
 setInterval(load, REFRESH_MIN * 60000);
-setInterval(function () { if (state.items.length) render(); }, 60000); // geri sayım tazelensin
+setInterval(function () { if (state.items.length) render(); }, 60000);
 </script>
 </body>
 </html>
