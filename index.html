@@ -1,0 +1,381 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>We Are The Champions - Matches</title>
+<style>
+  :root {
+    --bg: #070910;
+    --panel: rgba(17, 20, 32, .88);
+    --panel2: rgba(25, 29, 45, .94);
+    --line: rgba(212, 175, 55, .25);
+    --blue: #e0bd59;
+    --cyan: #ffe7a0;
+    --text: #f7f3e8;
+    --mute: #a8a5a0;
+    --red: #ff647c;
+    --amber: #f3bd56;
+    --green: #8dd6a4;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: transparent;
+  }
+  body {
+    padding: 7px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  /* Subtle premium black-and-gold atmosphere, designed to work in embeds too. */
+  body::before {
+    content: "";
+    position: fixed;
+    z-index: -2;
+    inset: -30px;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 8% 0%, rgba(212,175,55,.18), transparent 38%),
+      radial-gradient(ellipse at 100% 35%, rgba(93,71,20,.18), transparent 34%),
+      radial-gradient(ellipse at 45% 100%, rgba(44,52,75,.32), transparent 45%),
+      linear-gradient(135deg, #070910 0%, #10111a 48%, #080a10 100%);
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+    opacity: .22;
+    background-image:
+      linear-gradient(rgba(212,175,55,.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,175,55,.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(to bottom, black, transparent 85%);
+  }
+
+  .head {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12px; font-weight: 900; letter-spacing: 1.8px;
+    color: var(--blue); padding: 7px 6px 11px;
+    text-shadow: 0 0 16px rgba(212,175,55,.2);
+  }
+  .head img { width: 18px; height: 18px; }
+  .head .sp { flex: 1; }
+  .head .sync { font-size: 9px; letter-spacing: 0; color: var(--mute); font-weight: 600; }
+
+  .tabs { display: flex; gap: 5px; margin-bottom: 10px; }
+  .tab {
+    flex: 1; text-align: center; padding: 8px 3px; font-size: 10px;
+    font-weight: 850; letter-spacing: .55px; color: var(--mute);
+    background: rgba(16,18,27,.78); border: 1px solid rgba(255,255,255,.09);
+    border-radius: 9px; cursor: pointer; user-select: none;
+    transition: .2s ease;
+  }
+  .tab:hover { border-color: rgba(212,175,55,.45); color: #fff5d5; }
+  .tab.on {
+    color: #17130a;
+    background: linear-gradient(135deg, #f3d77c, #bd9130);
+    border-color: #ffe7a0;
+    box-shadow: 0 0 18px rgba(212,175,55,.2), inset 0 1px rgba(255,255,255,.45);
+  }
+  .tab .n {
+    display: inline-block; min-width: 14px; padding: 1px 4px; margin-left: 3px;
+    border-radius: 8px; background: rgba(255,255,255,.12); font-size: 9px;
+  }
+  .tab.on .n { background: rgba(0,0,0,.13); }
+  .tab.urgent .n { background: var(--red); color: #fff; }
+
+  .list { display: flex; flex-direction: column; gap: 9px; }
+  .m {
+    position: relative; display: block; text-decoration: none; color: inherit;
+    background: linear-gradient(135deg, rgba(19,21,31,.96), rgba(28,29,39,.91));
+    border: 1px solid rgba(212,175,55,.19); border-left: 3px solid var(--green);
+    border-radius: 13px; padding: 11px 11px;
+    box-shadow: 0 7px 18px rgba(0,0,0,.18), inset 0 1px rgba(255,255,255,.025);
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    overflow: hidden;
+  }
+  .m::before {
+    content: ""; position: absolute; top: 0; right: 0; width: 95px; height: 95px;
+    background: radial-gradient(circle, rgba(212,175,55,.09), transparent 70%);
+    pointer-events: none;
+  }
+  .m:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,220,116,.58);
+    box-shadow: 0 10px 25px rgba(0,0,0,.28), 0 0 18px rgba(212,175,55,.08);
+  }
+  .m.need {
+    border-left-color: var(--red); border-color: rgba(255,100,124,.48);
+    box-shadow: 0 0 16px rgba(255,100,124,.10);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  .m.behind { border-left-color: var(--amber); }
+  .m.live { border-left-color: var(--cyan); }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 6px rgba(255,100,124,.08); }
+    50% { box-shadow: 0 0 16px rgba(255,100,124,.24); }
+  }
+
+  .badge {
+    display: inline-block; font-size: 9px; font-weight: 900; letter-spacing: .8px;
+    padding: 3px 7px; border-radius: 5px; margin-bottom: 6px;
+  }
+  .b-need { background: rgba(255,100,124,.16); color: #ff8b9d; border: 1px solid rgba(255,100,124,.25); }
+  .b-behind { background: rgba(243,189,86,.15); color: #ffd27a; border: 1px solid rgba(243,189,86,.23); }
+  .b-ok { background: rgba(141,214,164,.12); color: var(--green); border: 1px solid rgba(141,214,164,.2); }
+  .b-live { background: rgba(255,231,160,.12); color: var(--cyan); border: 1px solid rgba(255,231,160,.22); }
+
+  .name { font-size: 12px; font-weight: 850; line-height: 1.35; color: #fff9e9; word-break: break-word; }
+  .vs { font-size: 10.5px; color: var(--mute); margin-top: 3px; }
+  .vs b { color: #e9d9a9; font-weight: 750; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+  .chip {
+    font-size: 9.5px; font-weight: 700; color: #d8d1bf;
+    background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.055);
+    border-radius: 5px; padding: 3px 6px;
+  }
+
+  .bar { height: 5px; margin-top: 9px; background: rgba(255,255,255,.08); border-radius: 4px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,#b88b27,#ffe7a0); border-radius: 4px; transition: width .6s ease; }
+  .m.need .bar > i { background: linear-gradient(90deg,#ff647c,#ffbd70); }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 5px; font-size: 10px; color: var(--mute); }
+  .row b { color: #fff8e8; }
+  .when { font-size: 10.5px; font-weight: 850; color: var(--cyan); }
+  .m.need .when { color: var(--amber); }
+
+  .cta {
+    display: block; margin-top: 9px; text-align: center; padding: 7px;
+    border-radius: 7px; font-size: 10px; font-weight: 900; letter-spacing: .7px;
+    color: #17130a; background: linear-gradient(135deg,#f4dc8a,#bf9335);
+    box-shadow: inset 0 1px rgba(255,255,255,.4), 0 4px 10px rgba(0,0,0,.15);
+  }
+  .m.need .cta {
+    color: #fff; background: linear-gradient(135deg,#ff7b91,#d93d58);
+    box-shadow: inset 0 1px rgba(255,255,255,.2);
+  }
+  .empty, .err {
+    text-align: center; font-size: 11px; color: var(--mute); padding: 20px 10px;
+    background: rgba(17,20,32,.84); border: 1px dashed rgba(212,175,55,.25); border-radius: 12px;
+  }
+  .skel {
+    height: 92px; border-radius: 12px;
+    background: linear-gradient(90deg,rgba(17,20,32,.85) 25%,rgba(42,39,30,.8) 50%,rgba(17,20,32,.85) 75%);
+    background-size: 200% 100%; animation: sh 1.3s linear infinite;
+  }
+  @keyframes sh { to { background-position: -200% 0; } }
+
+  .foot { text-align: center; margin-top: 10px; padding-bottom: 3px; }
+  .foot a {
+    font-size: 10px; font-weight: 850; color: #e5c86b; text-decoration: none;
+    letter-spacing: .35px; transition: color .2s ease;
+  }
+  .foot a:hover { color: #fff0b8; text-shadow: 0 0 12px rgba(212,175,55,.25); }
+  #dbg {
+    display: none; margin-top: 8px; font: 10px/1.4 monospace; color: #e5d38c;
+    white-space: pre-wrap; word-break: break-all; background: #08090d;
+    border: 1px solid rgba(212,175,55,.2); padding: 6px; border-radius: 6px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <span>♟️</span>
+  <span>UPCOMING MATCHES</span><span class="sp"></span><span class="sync" id="sync"></span>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab on" data-f="all">ALL<span class="n" id="n-all">0</span></div>
+  <div class="tab" data-f="need">NEEDS PLAYERS<span class="n" id="n-need">0</span></div>
+  <div class="tab" data-f="live">LIVE<span class="n" id="n-live">0</span></div>
+</div>
+
+<div class="list" id="list"><div class="skel"></div><div class="skel"></div></div>
+
+<div class="foot"><a id="allLink" target="_blank" rel="noopener" href="#">All club matches ➔</a></div>
+<div id="dbg"></div>
+
+<script>
+// ============ AYARLAR (sadece burayı değiştir) ============
+var CLUB          = "we-are-the-champions-7";  // kulübün kısa adı (chess.com/club/BU-KISIM)
+var MAX_UPCOMING  = 10;                        // en fazla kaç yaklaşan maç gösterilsin
+var MAX_LIVE      = 4;                         // en fazla kaç devam eden maç gösterilsin
+var REFRESH_MIN   = 5;                         // kaç dakikada bir yenilensin
+var API           = "https://api.chess.com/pub/";
+// ==========================================================
+
+var DEBUG = /[?&]debug=1/.test(location.search);
+var dbg = document.getElementById("dbg");
+function log(x) { if (DEBUG) { dbg.style.display = "block"; dbg.textContent += x + "\n"; } }
+
+var state = { items: [], filter: "all" };
+document.getElementById("allLink").href = "https://www.chess.com/club/matches/" + CLUB;
+
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]; }); }
+function idOf(url) { return String(url || "").replace(/\/+$/, "").split("/").pop(); }
+function slugOf(url) { return idOf(url); }
+function getJSON(url) {
+  return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status + " " + url); return r.json(); });
+}
+function prettyName(slug) { return String(slug || "").replace(/-\d+$/, "").replace(/-/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); }); }
+
+function fmtTC(s) {
+  if (!s) return "";
+  if (s.time_class === "daily" || /^1\/\d+/.test(s.time_control || "")) {
+    var m = /^1\/(\d+)/.exec(s.time_control || "");
+    if (m) { var d = Math.round(+m[1] / 86400); return d + (d === 1 ? " day/move" : " days/move"); }
+    return "Daily";
+  }
+  if (s.time_control) {
+    var p = String(s.time_control).split("+"); var base = Math.round(+p[0] / 60);
+    return base + "+" + (p[1] || 0) + " " + (s.time_class || "");
+  }
+  return s.time_class || "";
+}
+function fmtWhen(ts) {
+  if (!ts) return { label: "Start time TBD", short: "TBD" };
+  var ms = ts * 1000 - Date.now();
+  var d = new Date(ts * 1000);
+  var t = d.toLocaleString([], { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  if (ms <= 0) return { label: t, short: "Starting soon" };
+  var mins = Math.floor(ms / 60000), days = Math.floor(mins / 1440), hrs = Math.floor((mins % 1440) / 60);
+  var left = days > 0 ? days + "d " + hrs + "h" : hrs > 0 ? hrs + "h " + (mins % 60) + "m" : mins + "m";
+  return { label: t, short: "in " + left };
+}
+
+// Bir kayıt (liste + detay) -> gösterilecek nesne
+function build(entry, detail, kind) {
+  var id = idOf(entry["@id"] || entry.url || (detail && detail["@id"]));
+  var teams = (detail && detail.teams) || {};
+  var t1 = teams.team1 || {}, t2 = teams.team2 || {};
+  var ours = t1, theirs = t2;
+  if (String(t2["@id"] || "").indexOf(CLUB) > -1) { ours = t2; theirs = t1; }
+  else if (String(t1["@id"] || "").indexOf(CLUB) === -1 && entry.opponent) {
+    // takım bilgisi yoksa rakip bilgisini listeden al
+    theirs = { name: prettyName(slugOf(entry.opponent)) };
+  }
+  var s = (detail && detail.settings) || {};
+  var joined = (ours.players || []).length;
+  var oppJoined = (theirs.players || []).length;
+  var min = +s.min_team_players || 0;
+  var max = +s.max_team_players || 0;
+  var needs = min ? Math.max(0, min - joined) : 0;
+  var behind = oppJoined > joined ? oppJoined - joined : 0;
+  var start = (detail && detail.start_time) || entry.start_time || 0;
+
+  var level = kind === "live" ? "live" : needs > 0 ? "need" : (behind > 0 ? "behind" : "ok");
+  return {
+    id: id, kind: kind, level: level, name: (detail && detail.name) || entry.name || ("Match " + id),
+    opp: theirs.name || prettyName(slugOf(entry.opponent)) || "TBD",
+    joined: joined, oppJoined: oppJoined, min: min, max: max, needs: needs, behind: behind,
+    start: start, tc: fmtTC(s), rules: s.rules && s.rules !== "chess" ? s.rules : "",
+    minRating: s.min_rating, maxRating: s.max_rating, boards: detail && detail.boards,
+    minGames: s.min_required_games, hasDetail: !!detail
+  };
+}
+
+function card(m) {
+  var w = fmtWhen(m.start);
+  var badge = m.level === "need" ? '<span class="badge b-need">⚠ NEEDS ' + m.needs + ' MORE PLAYER' + (m.needs > 1 ? "S" : "") + '</span>'
+            : m.level === "behind" ? '<span class="badge b-behind">▼ BEHIND BY ' + m.behind + '</span>'
+            : m.level === "live" ? '<span class="badge b-live">● IN PROGRESS</span>'
+            : '<span class="badge b-ok">✔ READY</span>';
+  var chips = [];
+  if (m.tc) chips.push(m.tc);
+  if (m.rules) chips.push(m.rules);
+  if (m.min) chips.push("min " + m.min + (m.max ? " / max " + m.max : "") + " players");
+  if (m.boards) chips.push(m.boards + " boards");
+  if (m.minRating || m.maxRating) chips.push("Rating " + (m.minRating || "0") + "-" + (m.maxRating || "∞"));
+  if (m.minGames) chips.push("min " + m.minGames + " games");
+  var target = m.max || m.min || Math.max(m.joined, m.oppJoined, 1);
+  var pct = Math.min(100, Math.round(m.joined / target * 100));
+  var progress = m.hasDetail && m.kind !== "live"
+    ? '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="row"><span>Us <b>' + m.joined + '</b>' + (m.min ? " / " + m.min + " needed" : "") + '</span><span>Them <b>' + m.oppJoined + '</b></span></div>'
+    : "";
+  var cta = m.kind === "live" ? "VIEW MATCH" : m.level === "need" ? "JOIN NOW - WE NEED YOU!" : "JOIN MATCH";
+  return '<a class="m ' + m.level + '" target="_blank" rel="noopener" href="https://www.chess.com/club/matches/' + CLUB + '/' + m.id + '">' +
+    badge +
+    '<div class="name">' + esc(m.name) + '</div>' +
+    '<div class="vs">vs <b>' + esc(m.opp) + '</b></div>' +
+    '<div class="row"><span class="when">' + (m.kind === "live" ? "Started " + esc(w.label) : esc(w.short)) + '</span><span>' + esc(w.label) + '</span></div>' +
+    (chips.length ? '<div class="chips">' + chips.map(function (c) { return '<span class="chip">' + esc(c) + '</span>'; }).join("") + '</div>' : "") +
+    progress +
+    '<span class="cta">' + cta + '</span></a>';
+}
+
+function render() {
+  var items = state.items.slice();
+  var needCount = items.filter(function (m) { return m.level === "need"; }).length;
+  var liveCount = items.filter(function (m) { return m.kind === "live"; }).length;
+  var upCount = items.filter(function (m) { return m.kind !== "live"; }).length;
+  document.getElementById("n-all").textContent = upCount;
+  document.getElementById("n-need").textContent = needCount;
+  document.getElementById("n-live").textContent = liveCount;
+  document.querySelector('.tab[data-f="need"]').classList.toggle("urgent", needCount > 0);
+
+  var f = state.filter, view;
+  if (f === "need") view = items.filter(function (m) { return m.level === "need"; });
+  else if (f === "live") view = items.filter(function (m) { return m.kind === "live"; });
+  else view = items.filter(function (m) { return m.kind !== "live"; });
+
+  // Öne çıkarma: önce oyuncu eksiği en çok olan, sonra geride olanlar, sonra en yakın başlangıç
+  var rank = { need: 0, behind: 1, ok: 2, live: 3 };
+  view.sort(function (a, b) {
+    if (rank[a.level] !== rank[b.level]) return rank[a.level] - rank[b.level];
+    if (a.level === "need" && a.needs !== b.needs) return b.needs - a.needs;
+    return (a.start || 9e12) - (b.start || 9e12);
+  });
+
+  var list = document.getElementById("list");
+  if (!view.length) {
+    var msg = f === "need" ? "🎉 No matches need extra players right now." : f === "live" ? "No matches in progress." : "No upcoming matches right now.";
+    list.innerHTML = '<div class="empty">' + msg + '</div>'; return;
+  }
+  list.innerHTML = view.map(card).join("");
+}
+
+function load() {
+  return getJSON(API + "club/" + CLUB + "/matches").then(function (d) {
+    log("club ok: registered=" + (d.registered || []).length + " in_progress=" + (d.in_progress || []).length);
+    var reg = (d.registered || []).slice().sort(function (a, b) { return (a.start_time || 9e12) - (b.start_time || 9e12); }).slice(0, MAX_UPCOMING);
+    var live = (d.in_progress || []).slice(0, MAX_LIVE);
+    var jobs = reg.map(function (e) { return { e: e, k: "up" }; }).concat(live.map(function (e) { return { e: e, k: "live" }; }));
+    return Promise.all(jobs.map(function (j) {
+      var id = idOf(j.e["@id"] || j.e.url);
+      return getJSON(API + "match/" + id)
+        .then(function (det) { return build(j.e, det, j.k); })
+        .catch(function (err) { log("match " + id + " detay yok: " + err.message); return build(j.e, null, j.k); });
+    }));
+  }).then(function (items) {
+    state.items = items; render();
+    document.getElementById("sync").textContent = "updated " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }).catch(function (err) {
+    log("HATA: " + err.message);
+    document.getElementById("list").innerHTML = '<div class="err">Could not load matches.<br><a style="color:#4aa8ff" target="_blank" rel="noopener" href="https://www.chess.com/club/matches/' + CLUB + '">Open on Chess.com ➔</a></div>';
+  });
+}
+
+document.getElementById("tabs").addEventListener("click", function (e) {
+  var t = e.target.closest(".tab"); if (!t) return;
+  [].forEach.call(document.querySelectorAll(".tab"), function (x) { x.classList.remove("on"); });
+  t.classList.add("on"); state.filter = t.getAttribute("data-f"); render();
+});
+
+load();
+setInterval(load, REFRESH_MIN * 60000);
+setInterval(function () { if (state.items.length) render(); }, 60000); // geri sayım tazelensin
+</script>
+</body>
+</html>
